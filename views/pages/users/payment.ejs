@@ -1,0 +1,93 @@
+<div class="row">	
+    <div class="col-12">
+        <div class="sherah-body">
+            <!-- Dashboard Inner -->
+            <div class="sherah-dsinner">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="sherah-breadcrumb mg-top-30">
+                            <h2 class="sherah-breadcrumb__title">All Payments List</h2>
+                            <ul class="sherah-breadcrumb__list"> 
+                                <li><a href="/dashboard">Home</a></li>
+                                <li class="active"><a href="/payment/">All Payments List</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="sherah-table sherah-page-inner sherah-border sherah-default-bg mg-top-25">
+                    <% if (data != "") { %>
+                  
+                    <table id="sherah-table__vendor" class="sherah-table__main sherah-table__main-v3">
+                        <!-- sherah Table Head -->
+                        <thead class="sherah-table__head">
+                            <tr>
+                                <th class="sherah-table__column-2 sherah-table__h2">Payment Reference</th>
+                                <th class="sherah-table__column-3 sherah-table__h3">Amount</th>
+                                <th class="sherah-table__column-4 sherah-table__h4">Status</th>
+                                <th class="sherah-table__column-8 sherah-table__h7">Order Reference</th>
+                                <th class="sherah-table__column-9 sherah-table__h8">Order Quantity</th>
+                                <th class="sherah-table__column-9 sherah-table__h8">Purchased By</th>
+                                <th class="sherah-table__column-9 sherah-table__h8">Purchased Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="sherah-table__body">
+                            <% data.forEach((cus, index) => {%>
+                            <tr>
+                                <td class="sherah-table__column-1 sherah-table__data-1">
+                                    <div class="sherah-table__product">
+                                       
+                                        <!-- <div class="sherah-table__vendor-img">
+                                            <img src="img/vendor-1.png" alt="#">
+                                        </div> -->
+                                        <h4 class="sherah-table__vendor--title"><a href="#"><%=cus.reference %></a></h4>
+                                    </div>
+                                </td>
+                                <td class="sherah-table__column-2 sherah-table__data-2">
+                                    <div class="sherah-table__product-content">
+                                        <p class="sherah-table__product-desc"><%=cus.amount %></p>
+                                    </div>
+                                </td>
+                                <td class="sherah-table__column-3 sherah-table__data-3">
+                                    <div class="sherah-table__product-content">
+                                        <p class="sherah-table__product-desc"><%=cus.status %></p>
+                                    </div>
+                                </td>
+                              
+                                <td class="sherah-table__column-3 sherah-table__data-3">
+                                    <div class="sherah-table__product-content">
+                                        <p class="sherah-table__product-desc"><%=cus.orderDetails.reference %></p>
+                                    </div>
+                                </td>
+                                <td class="sherah-table__column-3 sherah-table__data-3">
+                                    <div class="sherah-table__product-content">
+                                        <p class="sherah-table__product-desc"><%=cus.orderDetails.quantity %></p>
+                                    </div>
+                                </td>
+                                <td class="sherah-table__column-3 sherah-table__data-3">
+                                    <div class="sherah-table__product-content">
+                                        <p class="sherah-table__product-desc"><%=cus.userDetails.name %></p>
+                                    </div>
+                                </td>
+                                <td class="sherah-table__column-6 sherah-table__data-6">
+                                    <div class="sherah-table__product-content">
+                                        <p class="sherah-table__product-desc"><%=cus.updatedAt %></p>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                            <%})%>
+                            
+                            
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                        <h4 class="errorText">No Payment found</h4>
+                           <% } %> 
+                </div>
+            </div>
+            <!-- End Dashboard Inner -->
+        </div>
+    </div>
+    
+    
+</div>

@@ -1,0 +1,174 @@
+<div class="row g-0">
+    <div class="col-lg-6 col-md-6 col-12 sherah-wc-col-one">
+        <div class="sherah-wc__inner" style="background-image: url('img/welcome-bg.png');">
+            <!-- Logo -->
+            <div class="sherah-wc__logo">
+                
+            </div>
+            <h2 class="myColor mx-auto">   Welcome to <br> Teemarh's Delight</h2>
+            <!-- Middle Image -->
+            <div class="sherah-wc__middle">
+                <a href="index.html"><img src="../../assets/img/welcome-vector.png" alt="#"></a>
+            </div>
+            <!-- Welcome Heading -->
+           
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-12 sherah-wc-col-two">
+        <div class="sherah-wc__form">
+            <div class="sherah-wc__form-inner">
+               
+                <h3 class="sherah-wc__form-title sherah-wc__form-title__one">Register With Us</h3>
+                <!-- Sign in Form -->
+                <div class="api error errorText"></div>
+                <form class="sherah-wc__form-main p-0" enctype="multipart/form-data" method="post">
+                    
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group">
+                                <label class="sherah-wc__form-label">FullName *</label>
+                                <div class="form-group__input">
+                                    <input class="sherah-wc__form-input" type="text" name="name" placeholder="Fatima" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="form-group">
+                                <label class="sherah-wc__form-label">Phone Number*</label>
+                                <div class="form-group__input">
+                                    <input class="sherah-wc__form-input" type="text" name="phone" placeholder="0908765434" required="required"> </div>
+                            </div>
+                            <div class="phone error errorText"></div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="sherah-wc__form-label">Email Address</label>
+                                <div class="form-group__input">
+                                    <input class="sherah-wc__form-input" type="email" name="email" placeholder="demo3243@gmail.com" required="required">
+                                </div>
+                            </div>
+                            <div class="email error errorText"></div>
+                        </div>
+                        <div class="col-12">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label class="sherah-wc__form-label">Password</label>
+                                <div class="form-group__input">
+                                    <input class="sherah-wc__form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" id="password-field" type="password" name="password" placeholder="" maxlength="8" required="required">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <!-- Form Group -->
+                            <div class="form-group">
+                                <label class="sherah-wc__form-label">Confirm Password</label>
+                                <div class="form-group__input">
+                                    <input class="sherah-wc__form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"  type="password" name="confirmPassword" placeholder="" maxlength="8" required="required">
+                                </div>
+                            </div>
+                            <div class="password error errorText"></div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group mg-top-20">
+                                <div class="sherah-wc__bottom">
+                                    <p class="sherah-wc__text">Already have an account? <a href="/login">Log in</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <!-- Form Group -->
+                            <div class="form-group form-mg-top25">
+                                <div class="sherah-wc__button sherah-wc__button--bottom">
+                                    <button class="ntfmax-wc__btn" type="submit">SignUp</button>
+                                    
+                                    
+                                </div>
+                            </div>
+                            <!-- Form Group -->
+                        </div>
+                    </div>
+ </form>	
+                <!-- End Sign in Form -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.querySelector("form");
+    const emailError = document.querySelector(".email.error");
+    const phoneError = document.querySelector(".phone.error");
+    const passwordError = document.querySelector(".password.error");
+    const apiError = document.querySelector(".api.error");
+  
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+  
+      // Reset errors
+      emailError.textContent = "";
+      passwordError.textContent = ""; 
+      phoneError.textContent ="";
+      apiError.textContent ="";
+  
+      // Get values
+      const name = form.name.value;
+      const email = form.email.value;
+      const phone = form.phone.value;
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+  
+      // Client-side validation
+      if (!isValidEmail(email)) {
+        emailError.textContent = "Invalid email format";
+        return;
+      }
+  
+      if (!isValidPhoneNumber(phone)) {
+        phoneError.textContent = "Invalid phone number format";
+        return;
+      }
+  
+      if (password !== confirmPassword) {
+        passwordError.textContent = "Passwords do not match";
+        return;
+      }
+  
+      try {
+        const res = await fetch("/create", {
+          method: "POST",
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            phone: phone,
+            role: "USER",
+            password: password,
+          }),
+          headers: { "Content-type": "application/json" },
+        });
+        const result = await res.json();
+  
+    
+        if (result  && result.success) {
+            console.log(result)
+          // Redirect or perform any other action upon successful registration
+          location.assign("/login");
+        }else{
+            apiError.textContent = result.message;
+        }
+      } catch (error) {
+        console.error(error.response.message);
+      }
+    });
+  
+    // Helper function to validate email format
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+  
+    // Helper function to validate phone number format
+    function isValidPhoneNumber(phone) {
+      const phoneRegex = /^\d{11}$/;
+      return phoneRegex.test(phone);
+    }
+  </script>

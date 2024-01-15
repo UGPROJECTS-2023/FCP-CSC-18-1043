@@ -1,0 +1,131 @@
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+  const apiError = document.querySelector(".api.error");
+  let token = localStorage.getItem('userToken');
+
+  try {
+    const res = await fetch("/auth/my-orders", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await res.json();
+    console.log(result);
+
+    if (result && result.success) {
+      const data = result.data;
+
+      console.log(data);
+
+      if (data.length > 0) {
+        const tableBody = document.querySelector(".sherah-table__body");
+
+        data.forEach((order) => {
+          const orderDetails = order;
+
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td class="sherah-table__column-1 sherah-table__data-1">
+              <div class="sherah-table__product">
+                <h4 class="sherah-table__vendor--title">${order.reference}</h4>
+              </div>
+            </td>
+            <td class="sherah-table__column-6 sherah-table__data-6">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${orderDetails.productDetails.name}</p>
+              </div>
+            </td>
+            <td class="sherah-table__column-6 sherah-table__data-6">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${orderDetails.productDetails.category}</p>
+              </div>
+            </td>
+            <td class="sherah-table__column-6 sherah-table__data-6">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${order.quantity}</p>
+              </div>
+            </td>
+            <td class="sherah-table__column-5 sherah-table__data-5">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${order.amount}</p>
+              </div>
+            </td>
+            <td class="sherah-table__column-4 sherah-table__data-4">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${order.paymentStatus}</p>
+              </div>
+            </td>
+            <td class="sherah-table__column-7 sherah-table__data-7">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${order.status}</p>
+              </div>
+            </td>
+            <td class="sherah-table__column-3 sherah-table__data-3">
+              <div class="sherah-table__product-content">
+                <p class="sherah-table__product-desc">${order.updatedAt}</p>
+              </div>
+            </td>
+          `;
+
+          tableBody.appendChild(row);
+        });
+      } else {
+        const errorText = document.createElement("h4");
+        errorText.className = "errorText";
+        errorText.textContent = "No Orders found";
+        tableBody.appendChild(errorText);
+      }
+    } else {
+      apiError.textContent = result.message;
+    }
+  } catch (error) {
+    console.error(error.response.message);
+  }
+});
+
+  </script>
+<div class="row">  
+    <div class="col-12">
+      <div class="sherah-body">
+        <!-- Dashboard Inner -->
+        <div class="sherah-dsinner">
+          <div class="row">
+            <div class="col-12">
+              <div class="sherah-breadcrumb mg-top-30">
+                <h2 class="sherah-breadcrumb__title">My Order List</h2>
+                <ul class="sherah-breadcrumb__list"> 
+                  <li><a href="/dashboard">Home</a></li>
+                  <li class="active"><a href="/">My Order List</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="sherah-table sherah-page-inner sherah-border sherah-default-bg mg-top-25">
+           
+              <table id="sherah-table__vendor" class="sherah-table__main sherah-table__main-v3">
+                <!-- sherah Table Head -->
+                <thead class="sherah-table__head">
+                  <tr>
+                    <th class="sherah-table__column-1 sherah-table__h1">Order ID</th>
+                    <th class="sherah-table__column-6 sherah-table__h6">Product Name</th>
+                    <th class="sherah-table__column-6 sherah-table__h6">Product Category</th>
+                    <th class="sherah-table__column-6 sherah-table__h6">Purchase Quantity</th>
+                    <th class="sherah-table__column-5 sherah-table__h5">Amount</th>
+                    <th class="sherah-table__column-4 sherah-table__h4">Payment Status</th>
+                    <th class="sherah-table__column-7 sherah-table__h7">Order Status</th>
+                    <th class="sherah-table__column-3 sherah-table__h3">Date</th>
+                  </tr>
+                </thead>
+                <tbody class="sherah-table__body"></tbody>
+              </table>
+          
+          </div>
+        </div>
+        <!-- End Dashboard Inner -->
+      </div>
+    </div>
+  </div>

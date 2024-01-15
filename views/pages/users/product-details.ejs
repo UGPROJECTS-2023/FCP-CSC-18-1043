@@ -1,0 +1,137 @@
+<div class="row">	
+    <div class="col-12">
+        <div class="sherah-body">
+            <!-- Dashboard Inner -->
+            <div class="sherah-dsinner">
+
+                <div class="row mg-top-30">
+                    <div class="col-12 sherah-flex-between">
+                        <!-- Sherah Breadcrumb -->
+                        <div class="sherah-breadcrumb">
+                            <h2 class="sherah-breadcrumb__title">Product Details</Details></h2>
+                            <ul class="sherah-breadcrumb__list"> 
+                                <li><a href="#">Home</a></li>
+                                <li class="active"><a href="products.html">Products Details</a></li>
+                            </ul>
+                        </div>
+                        <!-- End Sherah Breadcrumb -->
+                    </div>
+                </div>
+
+                <div class="product-detail-body sherah-default-bg sherah-border mg-top-30">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-12">
+                           <!-- Product Slider -->
+                            <div class="product-gallery">
+                                <!-- product details image -->
+                                <div class="product-details-image">
+                                    
+                                    <div class="main-preview-image">
+                                        <div class="tab-content product-image" id="pills-tabContent">
+                                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                <div class="single-product-image">
+                                                    <img src="http://localhost:9500/uploads/<%= data.pic %>" alt="product">
+                                                </div>
+                                                <!-- single product image -->
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- product details image -->
+                            </div>
+                            <!-- End Product slider -->
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12">
+                            <div class="product-detail-body__content">
+                                <h2 class="product-detail-body__title"><%=data.name %></h2>
+                               
+                                <div class="product-detail-body__deal--rating">
+                                    <h5 class="sherah-product-card__price">N <%=data.price %></h5>	
+                                    
+                                </div>
+                                <p class="product-detail-body__stock sherah-color3">Delivery Fees <span>N <%=data.deliveryFee %></span></p>
+                                <div class="product-detail-body__text">
+                                    <%=data.description %> </div>
+
+                                <!-- Sherah Product Button -->
+                                <div class="product-inside-button">
+                                    <form method="post" class="">
+                                   
+                                        <div class="quantity">
+                                            <!-- Input Order -->
+                                            <div class="input-group">
+                                                <input type="text" name="quantity" class="w-full form-control border-1 py-3 mb-4" placeholder="Quantity">
+                        
+                                            </div>
+                                            <!--/ End Input Order -->
+                                        </div>
+                                        <div>
+                                            <textarea name="deliveryAddress" class="w-100 form-control border-1" rows="10" cols="30" placeholder="Your Delivery Address"></textarea>
+                                        </div>
+                                       
+                                      
+                                 
+                                    <button  type="submit"
+                                       
+                                    name="submit" class="sherah-btn myBackground">Make Order</button>
+                                </form>
+                                </div>
+                                <!-- End Sherah Product Button -->
+                                <div class="sherah-border-btm pd-top-40 mg-btm-40"></div>
+                                <div class="sherah-products-meta">
+                                    <ul class="sherah-products-meta__list">
+                                         <li><span class="p-list-title">Category : </span> <%= data.category %></li>
+                                         <li>
+                                            <span class="p-list-title">Share:</span> 
+                                            <ul class="sherah-contact-info sherah-contact-social">
+                                                <li class="sherah-border"><a href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4500/product-details/<%= data.id %>&quote=<%= encodeURIComponent(data.name + ': ' + data.description) %>" target="_blank"><span class="sherah-color1__bg--offset"><i class="fa-brands fa-facebook-f"></i></span></a></li>
+                                                <li class="sherah-border"><a href="https://twitter.com/intent/tweet?url=http://localhost:4500/product-details/<%= data.id %>&text=<%= encodeURIComponent(data.name + ': ' + data.description) %>" target="_blank"><span class="sherah-color1__bg--offset"><i class="fa-brands fa-twitter"></i></span></a></li>
+                                                <li class="sherah-border"><a href="https://www.linkedin.com/shareArticle?url=http://localhost:4500/product-details/<%= data.id %>&title=<%= encodeURIComponent(data.name) %>&summary=<%= encodeURIComponent(data.description) %>" target="_blank"><span class="sherah-color1__bg--offset"><i class="fa-brands fa-linkedin"></i></span></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              
+            <!-- End Dashboard Inner -->
+        </div>
+    </div>
+</div>
+<script>
+    const token = localStorage.getItem("userToken");
+    // alert(token)
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        const quantity = form.quantity.value;
+        const deliveryAddress = form.deliveryAddress.value;
+
+        try {
+            const res = await fetch(`/order/<%=data.id %>`, {
+                method: "POST",
+                body: JSON.stringify({
+                    quantity: quantity,
+                    deliveryAddress: deliveryAddress,
+                }),
+                headers: { Authorization: `Bearer ${token}`, "Content-type": "application/json" },
+            });
+
+            const data = await res.json();
+            console.log(data);
+
+            if (data) {
+                // Handle the response, for example, redirecting to a new page
+                location.assign(data.link);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+</script>

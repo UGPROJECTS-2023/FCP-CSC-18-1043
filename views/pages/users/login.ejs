@@ -1,0 +1,117 @@
+<div class="row g-0">
+    <div class="col-lg-6 col-md-6 col-12 sherah-wc-col-one">
+        <div class="sherah-wc__inner" style="background-image: url('img/welcome-bg.png');">
+            <!-- Logo -->
+            <div class="sherah-wc__logo">
+                <!-- <h2 class="">Teemarh's Delight</h2> -->
+                <!-- <a href="index.html"><img src="../../assets/img/logo.png" alt="#"></a> -->
+            </div>
+            <h2 class="myColor mx-auto">   Welcome to <br> Teemarh's Delight</h2>
+            <!-- Middle Image -->
+            <div class="sherah-wc__middle">
+                <a href="index.html"><img src="../../assets/img/welcome-vector.png" alt="#"></a>
+            </div>
+            <!-- Welcome Heading -->
+            
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-12 sherah-wc-col-two">
+        <div class="sherah-wc__form">
+            <div class="sherah-wc__form-inner">
+               
+                <h3 class="sherah-wc__form-title sherah-wc__form-title__one">Login Your Account <span>Please enter your email and password to continue</span></h3>
+                <div class="api error errorText"></div>
+                <!-- Sign in Form -->
+                <form class="sherah-wc__form-main p-0"  method="post">
+                    <div class="form-group">
+                        <label class="sherah-wc__form-label">Email Address</label>
+                        <div class="form-group__input">
+                            <input class="sherah-wc__form-input" type="email" name="email" placeholder="demo3243@gmail.com" required="required">
+                        </div>
+                        <div class="email error errorText"></div>
+                    </div>
+                    <!-- Form Group -->
+                    <div class="form-group">
+                        <label class="sherah-wc__form-label">Password</label>
+                        <div class="form-group__input">
+                            <input class="sherah-wc__form-input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" id="password-field" type="password" name="password" placeholder="" maxlength="8" required="required">
+                        </div>
+                        <div class="password error errorText"></div>
+                    </div>
+                    <!-- Form Group -->
+                    <!-- <div class="form-group">
+                        <div class="sherah-wc__check-inline">
+                            <div class="sherah-wc__checkbox">
+                                <input class="sherah-wc__form-check" id="checkbox" name="checkbox" type="checkbox">
+                                <label for="checkbox">Remember me later</label>
+                            </div>
+                            <div class="sherah-wc__forgot">
+                                <a href="forgot-password.html" class="forgot-pass">Forget Password?</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- Form Group -->
+                    <div class="form-group form-mg-top25">
+                        <div class="sherah-wc__button sherah-wc__button--bottom">
+                            <button class="ntfmax-wc__btn" type="submit">Login</button>
+            
+                            
+                        </div>
+                    </div>
+                    <!-- Form Group -->
+                    <div class="form-group mg-top-20">
+                        <div class="sherah-wc__bottom">
+                            <p class="sherah-wc__text">Dont’t have an account ? <a href="/register">Sign up</a></p>
+                        </div>
+                    </div>
+                </form>	
+                <!-- End Sign in Form -->
+            </div>
+        </div>
+    </div>
+</div>
+  
+<script>
+    const form = document.querySelector("form");
+    const emailError = document.querySelector(".email.error");
+    const passwordError = document.querySelector(".password.error");
+    const apiError = document.querySelector(".api.error");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+  
+      //reset errors
+      emailError.textContent = "";
+      passwordError.textContent = "";
+      apiError.textContent ="";
+  
+      //get value
+      const email = form.email.value;
+      const password = form.password.value;
+  
+      // console.log(email, password);
+      try {
+        const res = await fetch("/user-login", {
+          method: "POST",
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+          headers: { "Content-type": "application/json" },
+        });
+        const result = await res.json();
+        console.log(result);
+        
+        if (result && result.success) {
+          window.localStorage.setItem("user", JSON.stringify(result.user));
+          window.localStorage.setItem("userToken", result?.token);
+          location.assign("/dashboard");
+        }else{
+            apiError.textContent = result.message;
+
+        }
+      } catch (error) {
+        console.error(error.response.message);
+      }
+    });
+  </script>
+  

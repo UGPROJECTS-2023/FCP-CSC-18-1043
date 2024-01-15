@@ -1,0 +1,154 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all delete buttons with the class 'delete-product-btn'
+        var deleteButtons = document.querySelectorAll('.delete-product-btn');
+    
+        // Attach a click event listener to each delete button
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                // Prevent the default behavior (navigation to the specified URL)
+                event.preventDefault();
+    
+                // Get the product ID from the 'data-product-id' attribute
+                var productId = button.getAttribute('data-product-id');
+    
+                // Perform your delete function or AJAX request here using the productId
+                // For example, you can use fetch to send a DELETE request to the server
+                fetch('/product/delete/' + productId, {
+                    method: 'DELETE'
+                    // Add other options if needed (headers, body, etc.)
+                }).then(function(response) {
+                    // Handle the response
+                    if (response.ok) {
+                        // Product deleted successfully, you can update the UI as needed
+                        console.log('Product deleted successfully');
+                    } else {
+                        // Handle the error
+                        console.error('Failed to delete product');
+                    }
+                }).catch(function(error) {
+                    // Handle network or other errors
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+    </script>
+<div class="row">
+    <div class="col-12">
+        <div class="sherah-body">
+            <!-- Dashboard Inner -->
+            <div class="sherah-dsinner">
+
+                <div class="row mg-top-30">
+                    <div class="col-12 sherah-flex-between">
+                        <!-- Sherah Breadcrumb -->
+                        <div class="sherah-breadcrumb">
+                            <h2 class="sherah-breadcrumb__title">Products</h2>
+                            <ul class="sherah-breadcrumb__list">
+                                <li><a href="#">Home</a></li>
+                                <li class="active"><a href="/products">Products</a></li>
+                            </ul>
+                        </div>
+                        <!-- End Sherah Breadcrumb -->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xxl-3 col-lg-4 col-12">
+                        <!-- Product Category Sidebar -->
+                        <div class="sherah-product-sidebar sherah-default-bg mg-top-30">
+                            <h4 class="sherah-product-sidebar__title sherah-border-btm">Categories</h4>
+                            <ul class="sherah-product-sidebar__list">
+                                <li><a href="#"><span><i class="fa-solid fa-chevron-right"></i>Snacks</span></a></li>
+                                <li><a href="#"><span><i class="fa-solid fa-chevron-right"></i>Candies</span></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="col-xxl-9 col-lg-8 col-12">
+                        <div class="sherah-breadcrumb__right mg-top-30">
+                            <div class="sherah-breadcrumb__right--first">
+                                
+                            </div>
+                            <div class="sherah-breadcrumb__right--second">
+                               
+                                <a href="/upload-product
+                                " class="sherah-btn sherah-gbcolor">Upload Product</a>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="tab_1" role="tabpanel"
+                                aria-labelledby="nav-home-tab">
+                                <% if (data != "") { %>
+                                    <div class="row">
+                                       
+                                            <% data.forEach((prod, index) => {%>
+                                    <div class="col-xxl-4 col-lg-6 col-md-6 col-12">
+                                        <!-- Single Product -->
+                                        <div
+                                            class="sherah-product-card sherah-product-card__v2  sherah-default-bg sherah-border mg-top-30">
+                                            <!-- Card Image -->
+                                            <div class="sherah-product-card__img">
+                                                <img src="http://localhost:9500/uploads/<%= prod.pic %>">
+                                                <div class="sherah-product-card__buttons">
+                                                    <a class="sherah-product-card__buttons--single sherah-default-bg sherah-border"
+                                                    data-product-id="<%= prod.id %>"
+                                                    >
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                   
+                                                   
+                                                </div>
+                                            </div>
+                                            <!-- Card Content -->
+                                            <div
+                                                class="sherah-product-card__content sherah-dflex-column sherah-flex-gap-5">
+                                                <h4 class="sherah-product-card__title">
+                                                    <a href="/product-details/<%=prod.id %>" class="sherah-pcolor"><%= prod.name %></a>
+                                                </h4>
+                                                <div class="sherah-product__bottom">
+                                                    <div class="sherah-product__bottom--single">
+                                                        <div class="sherah-product__bottom--single">
+                                                            <h5 class="sherah-product-card__price">N <%=prod.price %></h5>
+                                                            <p class="myColor">Delivery Fees <span>N <%=prod.deliveryFee %></span></p>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Single Product -->
+                                    </div>
+                                  
+                                    <%})%>
+                                </div>
+                                <% } else { %>
+                                    <h4 class="errorText">No Products found</h4>
+                                       <% } %> 
+                                <!-- <div class="row mg-top-40">
+                                    <div class="sherah-pagination">
+                                        <ul class="sherah-pagination__list">
+                                            <li class="sherah-pagination__button"><a href="#"><i
+                                                        class="fas fa-angle-left"></i></a></li>
+                                            <li><a href="#">01</a></li>
+                                            <li class="active"><a href="#">02</a></li>
+                                            <li><a href="#">03</a></li>
+                                            <li><a href="#">04</a></li>
+                                            <li><a href="#">05</a></li>
+                                            <li class="sherah-pagination__button"><a href="#"><i
+                                                        class="fas fa-angle-right"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div> -->
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Dashboard Inner -->
+        </div>
+    </div>
+</div>
